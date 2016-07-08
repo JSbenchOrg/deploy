@@ -28,6 +28,7 @@ cp -r $DIR/tmp/client/ $DIR/tmp/release/
 mv $DIR/tmp/release/client/ $DIR/tmp/release/$WWW_VERSION/
 rm -rf $DIR/tmp/release/$WWW_VERSION/.git
 sed -i 's/http\:\/\//https\:\/\//g' $DIR/tmp/release/$WWW_VERSION/js/app.js
+sed -i 's/<head>/<head><base href\=\"https\:\/\/$DOMAIN_WWW\/$WWW_VERSION">/g' $DIR/tmp/release/$WWW_VERSION/index.html
 sed -i "s/api\.jsbench\.org/api\.stage\.jsbench\.org\/$API_VERSION/g" $DIR/tmp/release/$WWW_VERSION/js/app.js
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER www "$DIR/tmp/release/$WWW_VERSION"
 rm -rf $DIR/tmp/release
@@ -41,7 +42,7 @@ rm -rf $DIR/tmp/release/$API_VERSION/extra
 cp $DIR/tmp/release/$API_VERSION/config.dist.php $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/RewriteBase \//RewriteBase \/$API_VERSION\//g" $DIR/tmp/release/$API_VERSION/.htaccess
 sed -i "s/\/index.php/\/$API_VERSION\/index.php/g" $DIR/tmp/release/$API_VERSION/.htaccess
-sed -i "s/http\:\/\/jsbench.org/https\:\/\/$DOMAIN_WWW\/$API_VERSION/g" $DIR/tmp/release/$API_VERSION/.htaccess
+sed -i "s/http\:\/\/jsbench.org/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/$API_VERSION/.htaccess
 sed -i "s/PLACEHOLDER_ORIGIN/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/BASE_URL/https\:\/\/$DOMAIN_API\/$API_VERSION/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" $DIR/tmp/release/$API_VERSION/config.php
@@ -49,6 +50,5 @@ sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" $DIR/tmp/release/$API_VERSION/config
 sed -i "s/MYSQL_USER/$MYSQL_USER/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" $DIR/tmp/release/$API_VERSION/config.php
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER api "$DIR/tmp/release/$API_VERSION"
-# todo make curl call to the migration script
-# curl https://$DOMAIN_API/$API_VERSION/install.php
+curl https://$DOMAIN_API/$API_VERSION/migrate.php
 rm -rf $DIR/tmp/release

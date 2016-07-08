@@ -28,7 +28,7 @@ cp -r $DIR/tmp/client/ $DIR/tmp/release/
 mv $DIR/tmp/release/client/ $DIR/tmp/release/$WWW_VERSION/
 rm -rf $DIR/tmp/release/$WWW_VERSION/.git
 sed -i 's/http\:\/\//https\:\/\//g' $DIR/tmp/release/$WWW_VERSION/js/app.js
-sed -i 's/<head>/<head><base href\=\"https\:\/\/$DOMAIN_WWW\/$WWW_VERSION">/g' $DIR/tmp/release/$WWW_VERSION/index.html
+sed -i "s/<head>/<head><base href\=\"https\:\/\/$DOMAIN_WWW\/$WWW_VERSION\">/g" $DIR/tmp/release/$WWW_VERSION/index.html
 sed -i "s/api\.jsbench\.org/api\.stage\.jsbench\.org\/$API_VERSION/g" $DIR/tmp/release/$WWW_VERSION/js/app.js
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER www "$DIR/tmp/release/$WWW_VERSION"
 rm -rf $DIR/tmp/release
@@ -38,6 +38,7 @@ cp -r $DIR/tmp/server/ $DIR/tmp/release/
 mv $DIR/tmp/release/server/ $DIR/tmp/release/$API_VERSION/
 rm -rf $DIR/tmp/release/$API_VERSION/.git
 rm -rf $DIR/tmp/release/$API_VERSION/tests
+rm -rf $DIR/tmp/release/$API_VERSION/deps/flight/tests
 rm -rf $DIR/tmp/release/$API_VERSION/extra
 cp $DIR/tmp/release/$API_VERSION/config.dist.php $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/RewriteBase \//RewriteBase \/$API_VERSION\//g" $DIR/tmp/release/$API_VERSION/.htaccess

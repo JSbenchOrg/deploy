@@ -39,6 +39,9 @@ rm -rf $DIR/tmp/release/$API_VERSION/.git
 rm -rf $DIR/tmp/release/$API_VERSION/tests
 rm -rf $DIR/tmp/release/$API_VERSION/extra
 cp $DIR/tmp/release/$API_VERSION/config.dist.php $DIR/tmp/release/$API_VERSION/config.php
+sed -i "s/RewriteBase \//RewriteBase \/$API_VERSION\//g" $DIR/tmp/release/$API_VERSION/.htaccess
+sed -i "s/\/index.php/\/$API_VERSION\/index.php/g" $DIR/tmp/release/$API_VERSION/.htaccess
+sed -i "s/http\:\/\/jsbench.org/https\:\/\/$DOMAIN_WWW\/$API_VERSION/g" $DIR/tmp/release/$API_VERSION/.htaccess
 sed -i "s/PLACEHOLDER_ORIGIN/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/BASE_URL/https\:\/\/$DOMAIN_API\/$API_VERSION/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" $DIR/tmp/release/$API_VERSION/config.php

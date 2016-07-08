@@ -35,6 +35,8 @@ mkdir $DIR/tmp/release
 cp -r $DIR/tmp/server/ $DIR/tmp/release/
 mv $DIR/tmp/release/server/ $DIR/tmp/release/$API_VERSION/
 rm -rf $DIR/tmp/release/$API_VERSION/.git
+rm -rf $DIR/tmp/release/$API_VERSION/tests
+rm -rf $DIR/tmp/release/$API_VERSION/extra
 # todo prepare config credentials
 # todo prepare migration (clean / inject script)
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER api "$DIR/tmp/release/$API_VERSION"

@@ -1,0 +1,1 @@
+Copy .env.local to .env and replace with real credentials.

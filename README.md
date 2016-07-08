@@ -20,5 +20,5 @@ Migrations and seeds are [to be] executed after the successful deployment. The t
 
 - [ ] it doesn't check for the existing folder on stage, will just upload / append to it
 - [ ] @todo migrations and seeds
-- [ ] @todo no report is being displayed / pushed to announce a successful push
+- [x] report is being displayed / pushed to announce a successful push
 - [ ] @todo each db table should have a prefix for the version (if more versions are to be staged and to avoid db conflicts)

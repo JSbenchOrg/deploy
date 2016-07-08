@@ -54,3 +54,5 @@ sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" $DIR/tmp/release/$API_VERSION/config
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER api "$DIR/tmp/release/$API_VERSION"
 curl https://$DOMAIN_API/$API_VERSION/migrate.php
 rm -rf $DIR/tmp/release
+
+curl -H "Content-type: application/json" -H "Accept: application/json" -X POST -d "{\"body\": \"Pushed Client $WWW_VERSION and Server $API_VERSION to https://$DOMAIN_WWW/$WWW_VERSION and https://$DOMAIN_API/$API_VERSION\"}"  https://api.github.com/repos/JSbenchOrg/deploy/issues/3/comments?access_token=$ACCESS_TOKEN

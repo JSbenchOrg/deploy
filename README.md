@@ -1,7 +1,6 @@
 ### Setup
 
 * Copy `.env.dist` to `.env` and replace with real credentials.
-* Run once `./initial-clone.sh`
 * Install ncftpput
 
 ----
@@ -9,7 +8,7 @@
 
 ### Update
 
-Run `./prepare-deploy.sh` to fetch the latest versions and deploy to stage. Each repo will have its own MAJOR.MINOR version as a destination folder.
+Run `./run.sh` to fetch the latest versions and deploy to stage. Each repo will have its own MAJOR.MINOR version as a destination folder.
 
 Migrations and seeds are [to be] executed after the successful deployment. The two repos will allow access / point to each other, so no additional config is needed.
 

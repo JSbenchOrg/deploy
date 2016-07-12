@@ -60,16 +60,26 @@ rm -rf $DIR/tmp/release
 mkdir $DIR/tmp/release
 echo "Cleanup"
 
-# copy to a dirti dir
+# copy to a dirty dir
 cp -r $DIR/tmp/client/ $DIR/tmp/release/
 echo "Copied the client to a tmp/release folder."
 
 # replace target in pre-compiled files
-sed -i "s/let serverUri \=/let serverUri \= \"\/https\:\/\/$DOMAIN_API\/$API_VERSION\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
-sed -i "s/let clientUri \=/let clientUri \= \"\/https\:\/\/$DOMAIN_WWW\/$WWW_VERSION\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
-sed -i "s/href\=\"\//href\=\"\/$WWW_VERSION\//g" $DIR/tmp/release/client/public/index.html
-sed -i "s/src\=\"\//srchref\=\"\/$WWW_VERSION\//g" $DIR/tmp/release/client/public/index.html
+sed -i "s/let serverUri \=/let serverUri \= \"https\:\/\/$DOMAIN_API\/$API_VERSION\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
+sed -i "s/let clientUri \=/let clientUri \= \"https\:\/\/$DOMAIN_WWW\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
+sed -i "s/http\:\/\/jsbench\.org/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
+sed -i "s/www\\\.jsbench\\\.org/www\.$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
+sed -i "s/jsbench\\\.org/$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
+sed -i "s/<sup>v2\.5\.0<\/sup>/<sup>$WWW_VERSION<\/sup>/g" $DIR/tmp/release/client/public/index.html
 echo "Applied client config settings."
+
+## replace target in pre-compiled files (using a version folder)
+#sed -i "s/let serverUri \=/let serverUri \= \"https\:\/\/$DOMAIN_API\/$API_VERSION\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
+#sed -i "s/\.addRoute\(\'\//\.addRoute\(\'\/$API_VERSION\//g" $DIR/tmp/release/client/ts/App.ts
+#sed -i "s/let clientUri \=/let clientUri \= \"https\:\/\/$DOMAIN_WWW\/$WWW_VERSION\"\;\/\//g" $DIR/tmp/release/client/ts/index.ts
+#sed -i "s/href\=\"\//href\=\"\/$WWW_VERSION\//g" $DIR/tmp/release/client/public/index.html
+#sed -i "s/src\=\"\//src\=\"\/$WWW_VERSION\//g" $DIR/tmp/release/client/public/index.html
+#echo "Applied client config settings using a version folder."
 
 # transpile TS -> JS
 cd $DIR/tmp/release/client
@@ -78,10 +88,15 @@ npm install -g gulp
 gulp tsc
 cd $DIR
 
+# keep only the public folder as the www folder and upload
+echo "Moved public client folder to www folder."
+mv $DIR/tmp/release/client/public $DIR/tmp/release/www
+ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER . "$DIR/tmp/release/www"
+
 # keep only the public folder as the version folder and upload
-echo "Moved public client folder to $WWW_VERSION folder."
-mv $DIR/tmp/release/client/public $DIR/tmp/release/$WWW_VERSION
-ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER www "$DIR/tmp/release/$WWW_VERSION"
+#echo "Moved public client folder to $WWW_VERSION folder."
+#mv $DIR/tmp/release/client/public $DIR/tmp/release/$WWW_VERSION
+#ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER www "$DIR/tmp/release/$WWW_VERSION"
 
 # cleanup
 rm -rf $DIR/tmp/release
@@ -111,8 +126,6 @@ sed -i "s/MYSQL_PASSWORD/$MYSQL_PASSWORD/g" $DIR/tmp/release/$API_VERSION/config
 ncftpput -R -v -u "$LOGIN" -p "$PASSWORD" $REMOTESERVER api "$DIR/tmp/release/$API_VERSION"
 curl https://$DOMAIN_API/$API_VERSION/migrate.php
 rm -rf $DIR/tmp/release
-
-# todo run browser tests
 
 # signal a successful staging
 curl -H "Content-type: application/json" -H "Accept: application/json" -X POST -d "{\"body\": \"Pushed Client $WWW_VERSION and Server $API_VERSION to https://$DOMAIN_WWW/$WWW_VERSION and https://$DOMAIN_API/$API_VERSION\"}"  https://api.github.com/repos/JSbenchOrg/deploy/issues/3/comments?access_token=$ACCESS_TOKEN

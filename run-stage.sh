@@ -70,7 +70,7 @@ sed -i "s/let clientUri \=/let clientUri \= \"https\:\/\/$DOMAIN_WWW\"\;\/\//g" 
 sed -i "s/http\:\/\/jsbench\.org/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
 sed -i "s/www\\\.jsbench\\\.org/www\.$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
 sed -i "s/jsbench\\\.org/$DOMAIN_WWW/g" $DIR/tmp/release/client/public/.htaccess
-sed -i "s/<sup>v2\.5\.0<\/sup>/<sup>$WWW_VERSION<\/sup>/g" $DIR/tmp/release/client/public/index.html
+sed -i "s/<sup>v2\.5\.0<\/sup>/<sup>$WWW_FULL_VERSION<\/sup>/g" $DIR/tmp/release/client/public/index.html
 echo "Applied client config settings."
 
 ## replace target in pre-compiled files (using a version folder)

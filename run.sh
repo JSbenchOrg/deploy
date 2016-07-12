@@ -116,6 +116,9 @@ sed -i "s/RewriteBase \//RewriteBase \/$API_VERSION\//g" $DIR/tmp/release/$API_V
 sed -i "s/\/index.php/\/$API_VERSION\/index.php/g" $DIR/tmp/release/$API_VERSION/.htaccess
 sed -i "s/http\:\/\/jsbench.org/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/$API_VERSION/.htaccess
 sed -i "s/PLACEHOLDER_ORIGIN/https\:\/\/$DOMAIN_WWW/g" $DIR/tmp/release/$API_VERSION/config.php
+if [ "$1" == "stage" ]; then
+    sed -i "s/'live' => true/'live' => false/g" $DIR/tmp/release/$API_VERSION/config.php
+fi
 sed -i "s/BASE_URL/https\:\/\/$DOMAIN_API\/$API_VERSION/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/MYSQL_HOST/$MYSQL_HOST/g" $DIR/tmp/release/$API_VERSION/config.php
 sed -i "s/MYSQL_DATABASE/$MYSQL_DATABASE/g" $DIR/tmp/release/$API_VERSION/config.php

@@ -2,7 +2,7 @@
 DIR=$PWD
 source .env
 
-cd $DIR/tmp/server
+cd $DIR/tmp/client
 git fetch
 git pull -s recursive -X theirs
 export WWW_COMMITID=$(git rev-parse --short HEAD)

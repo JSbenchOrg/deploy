@@ -106,9 +106,9 @@ mkdir $DIR/tmp/release
 cp -r $DIR/tmp/server/ $DIR/tmp/release/
 mv $DIR/tmp/release/server/ $DIR/tmp/release/$API_VERSION/
 rm -rf $DIR/tmp/release/$API_VERSION/.git
-rm -rf $DIR/tmp/release/$API_VERSION/tests
 rm -rf $DIR/tmp/release/$API_VERSION/deps/flight/tests
-rm -rf $DIR/tmp/release/$API_VERSION/extra
+#rm -rf $DIR/tmp/release/$API_VERSION/tests
+#rm -rf $DIR/tmp/release/$API_VERSION/extra
 
 # replace target in config file
 cp $DIR/tmp/release/$API_VERSION/config.dist.php $DIR/tmp/release/$API_VERSION/config.php
